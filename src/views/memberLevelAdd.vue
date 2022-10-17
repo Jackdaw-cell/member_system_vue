@@ -1,22 +1,33 @@
 <template>
-    <el-container style="height:1000px">
-      <div>
-          <el-aside  width="200px">
-            <vaside></vaside>
-          </el-aside>
-      </div>
-      <el-container>
-    <el-header style="height: 100px;text-align: right; font-size: 12px">
-      <vheader></vheader>
-    </el-header>
-
+  <el-container style="height:1000px">
+    <div>
+        <el-aside  width="200px">
+          <vaside></vaside>
+        </el-aside>
+    </div>
+    <el-container>  
+        <el-header style="height: 100px;text-align: right; font-size: 12px">
+          <vheader ></vheader>
+        </el-header>
         <el-main>
-              <el-row :gutter="20">
-                <el-col></el-col>
-              </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" style="text-align:left"> <vtag></vtag></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8"><h1 style="color:white;text-align:left;font-size: 30px;margin: 20px;">新建会员等级</h1></el-col>
+          </el-row>
+          <el-row type="flex" class="row-bg" justify="space-between">
+                <el-col :span="6" style="text-align:left">
+                      <router-link active-class="active" to="/"><el-button type="primary" >返回</el-button></router-link>
+                </el-col>
+            </el-row>
+            <br>
+            <el-row type="flex" class="row-bg" justify="space-around">
+              <el-col :span="24"><vform style="background-color:#41497d;padding:50px"></vform></el-col>
+            </el-row>
         </el-main>
-      </el-container>
     </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -26,7 +37,7 @@ import vtag from '@/components/tag.vue'
 import vheader from '@/components/header.vue'
 import vtable from '@/components/table.vue'
 import vdelete from '@/components/deleteAlert.vue'
-import vaddForm from '@/components/addForm.vue'
+import vform from '@/components/form.vue'
 import vpage from '@/components/page.vue'
 import vsearch from '@/components/search.vue'
 
@@ -34,15 +45,6 @@ export default {
   name: 'HomeView',
   data(){
     return {
-      column_key: [
-                    {prop:'levelName',label:'等级名称'},
-                    {prop:'',label:'普通权益'},
-                    {prop:'',label:'会员权益'},
-                    {prop:'createId',label:'创建人'},
-                    {prop:'expDemand',label:'满足经验值'},
-                    {prop:'isShow',label:'是否展示'},
-                    {prop:'option',label:'操作'},
-                  ] ,
       store:{
         // store对象，用于调用方法
         // spaceName 命名空间
@@ -62,7 +64,7 @@ export default {
     vheader,
     vtable,
     vdelete,
-    vaddForm,
+    vform,
     vpage,
     vsearch
   },

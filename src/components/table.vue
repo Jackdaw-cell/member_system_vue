@@ -13,6 +13,17 @@
         v-for="(value,index) in column_key" :key="index"
         >
         </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
     </el-table>
     </div>
 </template>
@@ -72,21 +83,21 @@ import request from '@/utils/request'
       // 请求返回表格
       requestGet(){
         request.get(this.requestd.url,{
-                    params:{
-                      pageNum:this.needing_attr.module.pageNum,
-                      pageSize:this.needing_attr.module.pageSize,
-                      keyWord:this.needing_attr.module.keyWord
-                    }
-                  }).then(
-                    res=>{
-                      if (this.requestd.transd) {
-                        this.requestd.transd(res)
-                      }
-                      this.needing_attr.stated.commit(this.needing_attr.spaceName+'setData',res.data)
-                      this.tableData=this.needing_attr.module.data
-                      this.needing_attr.stated.commit(this.needing_attr.spaceName+'setTotal',res.total)
-                      }
-                )
+          params:{
+            pageNum:this.needing_attr.module.pageNum,
+            pageSize:this.needing_attr.module.pageSize,
+            keyWord:this.needing_attr.module.keyWord
+          }
+        }).then(
+          res=>{
+            if (this.requestd.transd) {
+              this.requestd.transd(res)
+            }
+            this.needing_attr.stated.commit(this.needing_attr.spaceName+'setData',res.data)
+            this.tableData=this.needing_attr.module.data
+            this.needing_attr.stated.commit(this.needing_attr.spaceName+'setTotal',res.total)
+            }
+        )
       },
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 1) {

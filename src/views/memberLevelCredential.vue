@@ -12,16 +12,15 @@
   </el-header>
         <el-main>
           <el-row :gutter="20">
-            <el-col :span="12"> <vtag></vtag></el-col>
+            <el-col :span="12" style="text-align:left"> <vtag></vtag></el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="8"><h1 style="color:white;text-align:left;font-size: 30px;margin: 20px;">用户权益</h1></el-col>
           </el-row>
     
-            <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="6">
+            <el-row type="flex" class="row-bg" justify="space-between" >
+                <el-col :span="6" style="text-align:left">
                       <el-button-group>
-                      <vaddForm></vaddForm>
                       <vdelete></vdelete>
                     </el-button-group>
                 </el-col>
@@ -35,7 +34,7 @@
               <el-row type="flex" class="row-bg" justify="space-around">
                 <el-col :span="8">
                   <!-- 传入$store对象 -->
-                  <vpage :needing_attr="store"></vpage>
+                  <vpage :needing_attr="store" ></vpage>
                 </el-col>
               </el-row>
         </el-main>
@@ -50,7 +49,6 @@ import vtag from '@/components/tag.vue'
 import vheader from '@/components/header.vue'
 import vtable from '@/components/table.vue'
 import vdelete from '@/components/deleteAlert.vue'
-import vaddForm from '@/components/addForm.vue'
 import vpage from '@/components/page.vue'
 import vsearch from '@/components/search.vue'
 
@@ -62,11 +60,10 @@ export default {
                     {prop:'credentialId',label:'权益ID'},
                     {prop:'isVip',label:'权益类型'},
                     {prop:'avatar',label:'图标'},
-                    {prop:'credentialsName',label:'权益名称'},
-                    {prop:'credentialsStatement',label:'权益说明'},
+                    {prop:'credentialName',label:'权益名称'},
+                    {prop:'credentialStatement',label:'权益说明'},
                     {prop:'isShow',label:'是否展示'},
                     {prop:'createTime',label:'创建时间'},
-                    {prop:'option',label:'操作'},
                   ] ,
       store:{
         stated:this.$store,
@@ -76,12 +73,12 @@ export default {
       requestd:{
         url:'http://127.0.0.1:9090/memberLevelCredential',
         transd:function(res) {
-                  res.data.forEach(function(item) {
-                              if(item.isVip==0){item.isVip='会员'}
-                              else item.isVip='普通'
-                  })
-                }
-      }
+              res.data.forEach(function(item) {
+                  if(item.isVip==0){item.isVip='会员'}
+                  else item.isVip='普通'
+              })
+          }
+        }
     }
   },
   components: {
@@ -90,7 +87,6 @@ export default {
     vheader,
     vtable,
     vdelete,
-    vaddForm,
     vpage,
     vsearch
   },
