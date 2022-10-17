@@ -1,11 +1,18 @@
 <template>
     <div >
         <el-table
+        ref="multipleTable"
+        @selection-change="handleSelectionChange"
         :data="tableData"
         :row-class-name="tableRowClassName"
         border
         style="width: 100%;background-color: #2a315d;">
-        
+
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+
         <el-table-column
         :prop=value.prop
         sortable
@@ -46,7 +53,8 @@ import request from '@/utils/request'
       return {
         tableData:this.needing_attr.module.data,
         pageNum:this.needing_attr.module.pageNum,
-        pageSize:this.needing_attr.module.pageSize
+        pageSize:this.needing_attr.module.pageSize,
+        multipleSelection: this.needing_attr.module.multipleSelection
       };
     },
     computed: {
@@ -58,6 +66,9 @@ import request from '@/utils/request'
         },
         keyWord_change() {
           return this.needing_attr.module.keyWord;
+        },
+        multipleSelection_change(){
+          return this.needing_attr.module.multipleSelection
         }
       },
       watch:{
@@ -72,6 +83,9 @@ import request from '@/utils/request'
           keyWord_change:function(newd,old){
             this.keyWord=newd
             this.requestGet()
+          },
+          multipleSelection_change:function(newd,old){
+            this.multipleSelection=newd
           }
       },
     mounted() {  
@@ -80,6 +94,33 @@ import request from '@/utils/request'
         this.requestGet() 
       },
     methods: {
+      // 多选功能
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      handleSelectionChange(val) {
+        // 多选数据存放到store仓库，类型：数组
+        this.needing_attr.stated.commit(this.needing_attr.spaceName+'setMultipleSelection',val)
+        this.multipleSelection = val;
+      },
+      // 删除按钮
+      handleDelete(index, row){
+        this.requestDel(row.memberId)
+      },
+      requestDel(memberId){
+        request.delete(this.requestd.url,{
+          params:{memberId}
+        }).then(res=>{
+          console.log("删除成功");
+        })
+      },
+      // 获取数据
       // 请求返回表格
       requestGet(){
         request.get(this.requestd.url,{
@@ -89,7 +130,7 @@ import request from '@/utils/request'
             keyWord:this.needing_attr.module.keyWord
           }
         }).then(
-          res=>{
+          res=>{ 
             if (this.requestd.transd) {
               this.requestd.transd(res)
             }
@@ -99,6 +140,7 @@ import request from '@/utils/request'
             }
         )
       },
+      // 表格样式
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 1) {
           return 'warning-row';

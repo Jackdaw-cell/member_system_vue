@@ -34,6 +34,9 @@ export default{
             setData(state,value){
                 state.data=value
             },
+            setMultipleSelection(state,value){
+                state.multipleSelection=value
+            },
         },
         state:{
             // 表格内容公共属性
@@ -43,6 +46,7 @@ export default{
             keyWord:'',
             total:0,
             data:{},
+            multipleSelection:[]
         }
     
 }

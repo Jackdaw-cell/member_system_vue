@@ -18,8 +18,10 @@
           </el-row>
             <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" style="text-align:left">
+                      <!-- 增加 -->
                       <router-link active-class="active" to="/memberLevelAdd"><el-button type="primary" >新增</el-button></router-link>
-                      <vdelBtn></vdelBtn>
+                      <!-- 删除 -->
+                      <vdelBtn :needing_attr="store" :requestd="requestd"></vdelBtn>
                 </el-col>
                 <el-col :span="6"><vsearch style="display: inline-block;" :needing_attr="store"></vsearch></el-col>
             </el-row>
@@ -75,7 +77,6 @@ export default {
                   res.data.forEach(function(item) {
                       // 处理经验值拼接
                       item.expDemand=item.expDemandStart+'-'+item.expDemandEnd
-                      console.log(item.memberLevelCredentials);
                       let comStr=''
                       let vipStr=''
                       item.memberLevelCredentials.forEach(function(credential){

@@ -95,8 +95,8 @@
             <el-container>
               <el-header style="color:aliceblue">普通权益</el-header>
               <el-main>
-                <el-checkbox-group v-model="ruleForm.credentialComChecked" size="mini">
-                  <el-checkbox :label=value v-for="(value,index) in credentialVip" :key="index"></el-checkbox>
+                <el-checkbox-group v-model="ruleForm.memberLevelCredentials" size="mini">
+                  <el-checkbox :label=value v-for="(value,index) in credentialVip" :key="index">{{value.credentialsName}}</el-checkbox>
                 </el-checkbox-group>
               </el-main>
             </el-container>
@@ -107,8 +107,8 @@
             <el-container>
               <el-header style="color:aliceblue">会员权益</el-header>
               <el-main>
-                <el-checkbox-group v-model="ruleForm.credentialVipChecked" size="mini">
-                  <el-checkbox :label=value v-for="(value,index) in credentialCom" :key="index"></el-checkbox>
+                <el-checkbox-group v-model="ruleForm.memberLevelCredentials" size="mini">
+                  <el-checkbox  :label=value v-for="(value,index) in credentialCom" :key="index">{{value.credentialsName}}</el-checkbox>
                 </el-checkbox-group>
               </el-main>
             </el-container>
@@ -141,11 +141,9 @@ export default {
       res => {
         res.data.forEach(item => {
           if (item.isVip == 0) {
-            this.credentialCom.push(item.credentialsName)
-            this.credentialComId.push(item.credentialId)
+            this.credentialCom.push(item)
           } else {
-            this.credentialVip.push(item.credentialsName)
-            this.credentialVipId.push(item.credentialId)
+            this.credentialVip.push(item)
           }
 
         }); 
@@ -165,8 +163,6 @@ export default {
     return {
       credentialCom: [],
       credentialVip: [],
-      credentialComId:[],
-      credentialVipId:[],
       imageUrlAvatar: '',
       imageUrlBackground: '', 
       imgUrlCard:"http://localhost:9090/file/f2c1d42c06c144f7ae02a59270a14707.jpg",
@@ -178,8 +174,7 @@ export default {
         isDefault:1,
         avatar:'',
         background:'',
-        credentialComChecked: [],
-        credentialVipChecked: [],
+        memberLevelCredentials: [],
       },
       rules: {
         levelName: [
@@ -215,7 +210,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
-          this.requestGet(this.ruleForm)
+          this.requestPost(this.ruleForm)
         } else {
           console.log('error submit!!');
           return false;
@@ -225,11 +220,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    requestGet(ruleForm){
+    requestPost(ruleForm){
         request.post("http://127.0.0.1:9090/memberLevel",ruleForm
         ).then(
           res=>{
-            console.log("ooooook");
+            console.log("添加成功");
           }
         )
     },
